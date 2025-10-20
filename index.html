@@ -3,71 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAIA - Prototipo App E-Learning</title>
+    <title>MAIA - App E-Learning</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent; /* Evita el destello azul en móviles al tocar */
-        }
-        .main-container {
-            max-width: 1024px;
-            margin: auto;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .big-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 2.5rem 1.5rem;
-            border-radius: 1.5rem;
-            font-size: 3rem;
-            font-weight: 700;
-            color: white;
-            text-align: center;
-            line-height: 1.2;
-            transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .big-button:active {
-            transform: scale(0.98);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        /* Estilos para el modal de ayuda */
-        #help-modal.active #help-modal-content {
-            transform: scale(1);
-            opacity: 1;
-        }
-        #help-modal-content {
-             transition: opacity 0.3s ease, transform 0.3s ease;
-             transform: scale(0.95);
-             opacity: 0;
-        }
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .main-container { max-width: 1024px; margin: auto; min-height: 100vh; display: flex; flex-direction: column; }
+        .big-button { display: flex; justify-content: center; align-items: center; width: 100%; padding: 2.5rem 1.5rem; border-radius: 1.5rem; font-size: 3rem; font-weight: 700; color: white; text-align: center; line-height: 1.2; transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .big-button:active { transform: scale(0.98); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        #help-modal.active #help-modal-content { transform: scale(1); opacity: 1; }
+        #help-modal-content { transition: opacity 0.3s ease, transform 0.3s ease; transform: scale(0.95); opacity: 0; }
     </style>
 </head>
 <body class="bg-gray-50">
 
     <div id="app-container" class="main-container">
-
         <!-- Cabecera común -->
         <header id="app-header" class="p-6 border-b bg-white hidden">
              <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
-                     <svg class="w-8 h-8 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.311a15.045 15.045 0 01-7.5 0C4.508 19.64 2.25 15.223 2.25 10.5c0-1.25.223-2.454.634-3.582M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-                    </svg>
+                     <svg class="w-8 h-8 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.311a15.045 15.045 0 01-7.5 0C4.508 19.64 2.25 15.223 2.25 10.5c0-1.25.223-2.454.634-3.582M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
                     <h1 class="text-2xl font-bold tracking-tighter text-gray-800">MAIA</h1>
                 </div>
                 <button id="back-button" class="hidden text-gray-600 hover:text-gray-900 transition-colors">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                    </svg>
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
                     <span class="sr-only">Volver</span>
                 </button>
              </div>
@@ -75,7 +36,7 @@
         </header>
 
         <main class="flex-grow flex flex-col">
-            <!-- 1. Pantalla de Inicio -->
+            <!-- Pantallas de la app (Inicio, Categorías, Dinero) -->
             <section id="screen-start" class="flex flex-col flex-grow items-center justify-center p-8">
                 <div class="text-center mb-12">
                      <div class="flex items-center justify-center space-x-3">
@@ -84,13 +45,8 @@
                     </div>
                      <p class="text-gray-500 text-xl mt-2">Modelo de Aprendizaje e Inclusión Autónoma</p>
                 </div>
-                <button onclick="navigateTo('screen-categories')" class="big-button bg-green-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Comenzar
-                </button>
+                <button onclick="navigateTo('screen-categories')" class="big-button bg-green-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Comenzar</button>
             </section>
-
-            <!-- 2. Pantalla de Categorías -->
             <section id="screen-categories" class="flex-grow flex flex-col p-8 hidden">
                 <h2 class="text-5xl font-bold text-gray-800 mb-10 text-center">¿Sobre qué te gustaría aprender hoy?</h2>
                 <div class="space-y-6">
@@ -99,8 +55,6 @@
                     <button class="big-button bg-blue-500 opacity-50 cursor-not-allowed">Redes sociales</button>
                 </div>
             </section>
-            
-            <!-- 3. Pantalla de Categoría "Dinero" -->
             <section id="screen-money" class="flex-grow flex flex-col p-8 bg-orange-500 hidden">
                  <h2 class="text-6xl font-bold text-white mb-10">Dinero</h2>
                  <div class="space-y-6">
@@ -110,82 +64,56 @@
                 </div>
             </section>
 
-            <!-- 4. Pantalla del Tutorial (Cápsula) -->
+            <!-- Pantalla del Tutorial -->
             <section id="screen-tutorial" class="flex-grow flex flex-col hidden bg-gray-100">
                 <div class="p-8">
-                    <p id="tutorial-category" class="text-2xl text-gray-500">Transferencias bancarias</p>
+                    <p class="text-2xl text-gray-500">Transferencias bancarias</p>
                     <div class="flex items-center gap-4">
                         <h2 id="tutorial-step-title" class="text-5xl font-bold text-gray-800 mt-2"></h2>
-                        <button id="tts-button" class="mt-2 text-gray-500 hover:text-blue-600 transition-colors" title="Leer en voz alta">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M7 4a1 1 0 00-2 0v1.93a1 1 0 00.39.81l1.88 1.48a1 1 0 001.42-.09L10 6.4a1 1 0 00-1.5-.54L7 7.5V4z" />
-                                <path d="M3.28 2.22a.75.75 0 00-1.06 1.06l14.5 14.5a.75.75 0 101.06-1.06l-1.72-1.72A11.98 11.98 0 0018 10a12 12 0 00-5.83-10.25l-2.42 2.42a8 8 0 015.25 7.83 8 8 0 01-6 7.93V16a1 1 0 00-2 0v2.47a1 1 0 00.39.81l1.88 1.48a1 1 0 001.42-.09l-1.12-1.41a12.02 12.02 0 00-11.8-8.79 11.965 11.965 0 004.6 1.08l-1.72-1.72L3.28 2.22z" />
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.03 11.97a.75.75 0 00-1.06 1.06 9.5 9.5 0 0114.06 0 .75.75 0 101.06-1.06 8 8 0 00-12 0z" clip-rule="evenodd" />
-                            </svg>
-                            <span class="sr-only">Leer en voz alta</span>
-                        </button>
+                        <button id="tts-button" class="mt-2 text-gray-500 hover:text-blue-600 transition-colors" title="Leer en voz alta"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor"><path d="M7 4a1 1 0 00-2 0v1.93a1 1 0 00.39.81l1.88 1.48a1 1 0 001.42-.09L10 6.4a1 1 0 00-1.5-.54L7 7.5V4z" /><path d="M3.28 2.22a.75.75 0 00-1.06 1.06l14.5 14.5a.75.75 0 101.06-1.06l-1.72-1.72A11.98 11.98 0 0018 10a12 12 0 00-5.83-10.25l-2.42 2.42a8 8 0 015.25 7.83 8 8 0 01-6 7.93V16a1 1 0 00-2 0v2.47a1 1 0 00.39.81l1.88 1.48a1 1 0 001.42-.09l-1.12-1.41a12.02 12.02 0 00-11.8-8.79 11.965 11.965 0 004.6 1.08l-1.72-1.72L3.28 2.22z" /><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.03 11.97a.75.75 0 00-1.06 1.06 9.5 9.5 0 0114.06 0 .75.75 0 101.06-1.06 8 8 0 00-12 0z" clip-rule="evenodd" /></svg></button>
                     </div>
                 </div>
                 
-                <div class="w-full flex-grow bg-black flex items-center justify-center p-4">
-                    <video id="tutorial-video" class="w-full h-full max-h-[60vh] object-contain" playsinline></video>
+                <!-- El contenedor del video ahora estará vacío y se llenará con JavaScript -->
+                <div id="video-container" class="w-full flex-grow bg-black flex items-center justify-center p-4">
+                    <!-- YouTube iframe se insertará aquí -->
                 </div>
 
+                <!-- Controles de navegación -->
                 <div class="bg-gray-800 p-4 flex items-center justify-center space-x-2 sm:space-x-4">
-                    <button id="tutorial-prev" class="text-white bg-gray-700 rounded-full p-4 hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
-                    </button>
-                     <button id="tutorial-repeat" class="text-white bg-green-500 rounded-full p-4 hover:bg-green-600 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 12A8.998 8.998 0 0012 3a9 9 0 00-7.55 14.125" /><path stroke-linecap="round" stroke-linejoin="round" d="M20 20v-5h-5M4 12a8.998 8.998 0 008 9 9 9 0 007.55-14.125" /></svg>
-                    </button>
-                    <button id="help-button" class="text-white bg-blue-600 rounded-full p-4 hover:bg-blue-700 transition-colors flex items-center gap-1">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.546-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <span class="sr-only">Pedir Ayuda</span>
-                    </button>
-                    <button id="tutorial-play-pause" class="text-white bg-green-500 rounded-full p-6 hover:bg-green-600 transition-colors">
-                        <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8.118v3.764a1 1 0 001.555.832l3.197-1.882a1 1 0 000-1.664l-3.197-1.882z" clip-rule="evenodd" /></svg>
-                        <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1H8zm5 0a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" clip-rule="evenodd" /></svg>
-                    </button>
-                    <button id="tutorial-next" class="text-white bg-gray-700 rounded-full p-4 hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-                    </button>
+                    <button id="tutorial-prev" class="text-white bg-gray-700 rounded-full p-4 hover:bg-gray-600 disabled:opacity-50"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg></button>
+                    <button id="help-button" class="text-white bg-blue-600 rounded-full p-4 hover:bg-blue-700 flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.546-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></button>
+                    <button id="tutorial-next" class="text-white bg-gray-700 rounded-full p-4 hover:bg-gray-600 disabled:opacity-50"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg></button>
                 </div>
             </section>
         </main>
-    </div>
-
-    <!-- Modal de Ayuda con IA -->
-    <div id="help-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
-        <div id="help-modal-content" class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 max-w-2xl w-full">
-            <div class="flex justify-between items-start">
-                <h3 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">✨ ¿Necesitas ayuda?</h3>
-                <button id="close-help-modal" class="text-gray-400 hover:text-gray-800">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            <p class="text-lg text-gray-600 mb-6">Pregúntale a MAIA sobre este paso. Por ejemplo: "¿Qué es un destinatario?"</p>
-            <div class="space-y-4">
-                <textarea id="help-question-input" class="w-full border-2 border-gray-300 rounded-lg p-4 text-xl focus:ring-blue-500 focus:border-blue-500" rows="3" placeholder="Escribe tu pregunta aquí..."></textarea>
-                <button id="ask-gemini-button" class="w-full flex items-center justify-center bg-blue-600 text-white font-bold text-2xl py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-300">
-                    <span id="ask-button-text">Preguntar a MAIA</span>
-                    <div id="ask-button-loader" class="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin hidden"></div>
-                </button>
-            </div>
-            <div id="gemini-answer-container" class="mt-8 hidden">
-                 <h4 class="text-2xl font-bold text-gray-800 mb-2">Respuesta de MAIA:</h4>
-                 <div class="bg-blue-50 p-6 rounded-lg text-xl text-gray-800 prose max-w-none">
-                    <p id="gemini-answer-text"></p>
-                 </div>
-                 <button id="read-answer-button" class="mt-4 flex items-center gap-2 text-blue-600 hover:underline disabled:opacity-50">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.636 5.636a9 9 0 0112.728 0M18.364 18.364A9 9 0 015.636 18.364m12.728 0L5.636 5.636"></path></svg>
-                    Leer respuesta
-                 </button>
+        
+        <!-- Modal de Ayuda (sin cambios) -->
+        <div id="help-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
+            <div id="help-modal-content" class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 max-w-2xl w-full">
+                <div class="flex justify-between items-start">
+                    <h3 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">✨ ¿Necesitas ayuda?</h3>
+                    <button id="close-help-modal" class="text-gray-400 hover:text-gray-800"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                </div>
+                <p class="text-lg text-gray-600 mb-6">Pregúntale a MAIA sobre este paso. Por ejemplo: "¿Qué es un destinatario?"</p>
+                <div class="space-y-4">
+                    <textarea id="help-question-input" class="w-full border-2 border-gray-300 rounded-lg p-4 text-xl focus:ring-blue-500 focus:border-blue-500" rows="3" placeholder="Escribe tu pregunta aquí..."></textarea>
+                    <button id="ask-gemini-button" class="w-full flex items-center justify-center bg-blue-600 text-white font-bold text-2xl py-4 px-6 rounded-lg hover:bg-blue-700 disabled:bg-blue-300">
+                        <span id="ask-button-text">Preguntar a MAIA</span>
+                        <div id="ask-button-loader" class="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin hidden"></div>
+                    </button>
+                </div>
+                <div id="gemini-answer-container" class="mt-8 hidden">
+                     <h4 class="text-2xl font-bold text-gray-800 mb-2">Respuesta de MAIA:</h4>
+                     <div class="bg-blue-50 p-6 rounded-lg text-xl text-gray-800 prose max-w-none"><p id="gemini-answer-text"></p></div>
+                     <button id="read-answer-button" class="mt-4 flex items-center gap-2 text-blue-600 hover:underline disabled:opacity-50"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.636 5.636a9 9 0 0112.728 0M18.364 18.364A9 9 0 015.636 18.364m12.728 0L5.636 5.636"></path></svg>Leer respuesta</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- NAVEGACIÓN DE LA APP ---
+        // --- NAVEGACIÓN Y LÓGICA GENERAL ---
         const screens = document.querySelectorAll('main > section');
         const header = document.getElementById('app-header');
         const backButton = document.getElementById('back-button');
@@ -197,74 +125,62 @@
             if (screenId !== 'screen-start') {
                 header.classList.remove('hidden');
                 backButton.classList.remove('hidden');
-                if (navigationHistory[navigationHistory.length - 1] !== screenId) {
-                    navigationHistory.push(screenId);
-                }
+                if (navigationHistory[navigationHistory.length - 1] !== screenId) navigationHistory.push(screenId);
             } else {
                 header.classList.add('hidden');
                 navigationHistory = ['screen-start'];
             }
-            if (screenId === 'screen-tutorial') {
-                loadStep(0);
-            }
+            if (screenId === 'screen-tutorial') loadStep(0);
         }
         
         backButton.addEventListener('click', () => {
             if (navigationHistory.length > 1) {
                 navigationHistory.pop();
-                const previousScreen = navigationHistory[navigationHistory.length - 1];
-                if(document.getElementById('screen-tutorial').classList.contains('hidden') === false) {
-                    video.pause();
-                }
-                navigateTo(previousScreen);
+                navigateTo(navigationHistory[navigationHistory.length - 1]);
             }
         });
 
-        // --- LÓGICA DEL TUTORIAL ---
+        // --- LÓGICA DEL TUTORIAL CON YOUTUBE ---
         const tutorialSteps = [
-            { title: "PASO 1: Abrir app de tu banco", videoSrc: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" },
-            { title: "PASO 2: Encontrar “Transferencia”", videoSrc: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" },
-            { title: "PASO 3: Ingresar datos del destinatario", videoSrc: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4" },
-            { title: "PASO 4: Elegir tu destinatario", videoSrc: "https://storage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4" },
-            { title: "PASO 5: Ingresar el monto", videoSrc: "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" },
-            { title: "¡Listo! Transferencia realizada", videoSrc: "https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4" }
+            { title: "PASO 1: Abrir app de tu banco", videoSrc: "https://www.youtube.com/embed/9rn5gUPhhIw" },
+            { title: "PASO 2: Encontrar “Transferencia”", videoSrc: "https://www.youtube.com/embed/ry_wfvpwk6s" },
+            { title: "PASO 3: Ingresar datos del destinatario", videoSrc: "https://www.youtube.com/embed/W4F-SQ-18G8" },
+            { title: "PASO 4: Elegir tu destinatario", videoSrc: "https://www.youtube.com/embed/TC6udYDNrHY" },
+            { title: "PASO 5: Ingresar el monto", videoSrc: "https://www.youtube.com/embed/EkWl76y2u64" },
+            { title: "¡Listo! Transferencia realizada", videoSrc: "https://www.youtube.com/embed/wSNNEJAwTDM" }
         ];
 
         let currentStepIndex = 0;
         const stepTitleElement = document.getElementById('tutorial-step-title');
-        const video = document.getElementById('tutorial-video');
         const prevButton = document.getElementById('tutorial-prev');
         const nextButton = document.getElementById('tutorial-next');
-        const repeatButton = document.getElementById('tutorial-repeat');
-        const playPauseButton = document.getElementById('tutorial-play-pause');
-        const playIcon = document.getElementById('play-icon');
-        const pauseIcon = document.getElementById('pause-icon');
         const ttsButton = document.getElementById('tts-button');
+        const videoContainer = document.getElementById('video-container');
 
         function loadStep(index) {
             currentStepIndex = index;
             const step = tutorialSteps[index];
             stepTitleElement.textContent = step.title;
-            video.src = step.videoSrc;
-            video.poster = `https://placehold.co/1200x700/334155/ffffff?text=Paso+${index + 1}`;
-            video.load();
-            video.play().catch(e => console.log("La reproducción automática fue bloqueada. El usuario debe iniciarla."));
+
+            videoContainer.innerHTML = ''; 
+            const iframe = document.createElement('iframe');
+            iframe.setAttribute('src', `${step.videoSrc}?autoplay=1&rel=0&modestbranding=1&playsinline=1`);
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+            iframe.setAttribute('allowfullscreen', '');
+            iframe.className = 'w-full h-full';
+            videoContainer.appendChild(iframe);
+
             prevButton.disabled = index === 0;
             nextButton.disabled = index === tutorialSteps.length - 1;
         }
 
         nextButton.addEventListener('click', () => currentStepIndex < tutorialSteps.length - 1 && loadStep(currentStepIndex + 1));
         prevButton.addEventListener('click', () => currentStepIndex > 0 && loadStep(currentStepIndex - 1));
-        repeatButton.addEventListener('click', () => { video.currentTime = 0; video.play(); });
-        playPauseButton.addEventListener('click', () => video.paused ? video.play() : video.pause());
-        video.addEventListener('play', () => { playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); });
-        video.addEventListener('pause', () => { playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); });
-        video.addEventListener('ended', () => { if (currentStepIndex < tutorialSteps.length - 1) setTimeout(() => loadStep(currentStepIndex + 1), 500); });
         ttsButton.addEventListener('click', () => handleReadAloud(stepTitleElement.textContent));
-
+        
         // --- LÓGICA DE AYUDA CON GEMINI ---
         const helpModal = document.getElementById('help-modal');
-        const helpModalContent = document.getElementById('help-modal-content');
         const helpButton = document.getElementById('help-button');
         const closeHelpButton = document.getElementById('close-help-modal');
         const askGeminiButton = document.getElementById('ask-gemini-button');
@@ -288,13 +204,10 @@
         async function handleAskQuestion() {
             const question = questionInput.value.trim();
             if (!question) return;
-
             toggleLoading(true);
             answerContainer.classList.add('hidden');
-            
             const context = `El usuario está en el paso "${tutorialSteps[currentStepIndex].title}" del tutorial "Cómo hacer transferencias bancarias".`;
             const responseText = await askGeminiAssistant(question, context);
-            
             answerText.textContent = responseText;
             answerContainer.classList.remove('hidden');
             questionInput.value = '';
@@ -308,64 +221,40 @@
         }
 
         async function askGeminiAssistant(userQuestion, context) {
-            const apiKey = ""; // API key will be provided by the environment
+            const apiKey = "";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            const systemPrompt = "Eres MAIA, un asistente virtual amigable y muy paciente. Tu propósito es ayudar a adultos mayores con baja alfabetización digital. Explica conceptos de tecnología y banca de la forma más simple posible, usando frases cortas, analogías de la vida cotidiana y un tono tranquilizador. Nunca uses jerga técnica. Siempre responde en español.";
-
-            const payload = {
-                contents: [{ parts: [{ text: `${context}\n\nEl usuario pregunta: "${userQuestion}"` }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] },
-            };
-
+            const systemPrompt = "Eres MAIA, un asistente virtual amigable y paciente. Tu propósito es ayudar a adultos mayores con baja alfabetización digital. Explica conceptos de tecnología y banca de la forma más simple posible, usando frases cortas, analogías y un tono tranquilizador. No uses jerga técnica. Responde en español.";
+            const payload = { contents: [{ parts: [{ text: `${context}\n\nPregunta: "${userQuestion}"` }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, };
             try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
                 return result.candidates?.[0]?.content?.parts?.[0]?.text || "No pude entender la pregunta. ¿Podrías intentar de otra forma?";
             } catch (error) {
                 console.error("Error calling Gemini API:", error);
-                return "Hubo un problema para conectarme. Por favor, intenta de nuevo más tarde.";
+                return "Hubo un problema para conectarme. Intenta de nuevo más tarde.";
             }
         }
-
+        
         // --- LÓGICA DE TEXT-TO-SPEECH (TTS) CON GEMINI ---
         let currentAudio = null;
         async function handleReadAloud(textToRead) {
-            if (currentAudio && !currentAudio.paused) {
-                currentAudio.pause();
-                currentAudio = null;
-                return;
-            }
+            if (currentAudio && !currentAudio.paused) { currentAudio.pause(); currentAudio = null; return; }
             try {
                 const { audioData, mimeType } = await generateTtsAudio(textToRead);
-                if (audioData && mimeType) {
-                    await playAudio(audioData, mimeType);
-                }
-            } catch (error) {
-                console.error("Error en TTS:", error);
-                alert("Hubo un error al generar el audio. Inténtalo de nuevo.");
-            }
+                if (audioData && mimeType) await playAudio(audioData, mimeType);
+            } catch (error) { console.error("Error en TTS:", error); }
         }
-
         async function generateTtsAudio(text) {
-            const apiKey = ""; // API key will be provided by the environment
+            const apiKey = "";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
-            const payload = {
-                contents: [{ parts: [{ text: `Di con voz calma y clara: ${text}` }] }],
-                generationConfig: { responseModalities: ["AUDIO"] },
-                model: "gemini-2.5-flash-preview-tts"
-            };
+            const payload = { contents: [{ parts: [{ text: `Di con voz calma y clara: ${text}` }] }], generationConfig: { responseModalities: ["AUDIO"] }, model: "gemini-2.5-flash-preview-tts" };
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
             if (!response.ok) throw new Error(`TTS API error! status: ${response.status}`);
             const result = await response.json();
             const part = result?.candidates?.[0]?.content?.parts?.[0];
             return { audioData: part?.inlineData?.data, mimeType: part?.inlineData?.mimeType };
         }
-
         async function playAudio(base64Data, mimeType) {
             const sampleRate = parseInt(mimeType.match(/rate=(\d+)/)[1], 10);
             const pcmData = base64ToArrayBuffer(base64Data);
@@ -375,35 +264,8 @@
             currentAudio = new Audio(audioUrl);
             await currentAudio.play();
         }
-
-        function base64ToArrayBuffer(base64) {
-            const binaryString = window.atob(base64);
-            const len = binaryString.length;
-            const bytes = new Uint8Array(len);
-            for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
-            return bytes.buffer;
-        }
-
-        function pcmToWav(pcmData, sampleRate) {
-            const header = new ArrayBuffer(44);
-            const view = new DataView(header);
-            const dataSize = pcmData.length * 2;
-            view.setUint32(0, 0x52494646, false); // "RIFF"
-            view.setUint32(4, 36 + dataSize, true);
-            view.setUint32(8, 0x57415645, false); // "WAVE"
-            view.setUint32(12, 0x666d7420, false); // "fmt "
-            view.setUint32(16, 16, true);
-            view.setUint16(20, 1, true); // PCM
-            view.setUint16(22, 1, true); // Mono
-            view.setUint32(24, sampleRate, true);
-            view.setUint32(28, sampleRate * 2, true); // Byte rate
-            view.setUint16(32, 2, true); // Block align
-            view.setUint16(34, 16, true); // 16-bit
-            view.setUint32(36, 0x64617461, false); // "data"
-            view.setUint32(40, dataSize, true);
-            return new Blob([header, pcmData], { type: 'audio/wav' });
-        }
+        function base64ToArrayBuffer(base64) { const binaryString = window.atob(base64); const len = binaryString.length; const bytes = new Uint8Array(len); for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i); return bytes.buffer; }
+        function pcmToWav(pcmData, sampleRate) { const header = new ArrayBuffer(44); const view = new DataView(header); const dataSize = pcmData.length * 2; view.setUint32(0, 0x52494646, false); view.setUint32(4, 36 + dataSize, true); view.setUint32(8, 0x57415645, false); view.setUint32(12, 0x666d7420, false); view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true); view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true); view.setUint32(36, 0x64617461, false); view.setUint32(40, dataSize, true); return new Blob([header, pcmData], { type: 'audio/wav' }); }
     </script>
 </body>
 </html>
-
