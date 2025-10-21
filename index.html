@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>MAIA v2.1 - Simulador Mejorado</title>
+    <title>MAIA v2.2 - Simulador Funcional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -269,11 +269,12 @@
         // --- LÓGICA DEL TUTORIAL CON VIDEOS ---
         const tutorialSteps = [
             { title: "PASO 1: Abrir app de tu banco", videoSrc: "https://www.youtube.com/embed/9rn5gUPhhIw" },
-            { title: "PASO 2: Encontrar “Transferencia”", videoSrc: "https://www.youtube.com/embed/ry_wfvpwk6s" },
-            { title: "PASO 3: Ingresar datos del destinatario", videoSrc: "https://www.youtube.com/embed/W4F-SQ-18G8" },
-            { title: "PASO 4: Elegir tu destinatario", videoSrc: "https://www.youtube.com/embed/TC6udYDNrHY" },
-            { title: "PASO 5: Ingresar el monto", videoSrc: "https://www.youtube.com/embed/EkWl76y2u64" },
-            { title: "¡Listo! Transferencia realizada", videoSrc: "https://www.youtube.com/embed/wSNNEJAwTDM" }
+            { title: "Paso 2: Ingresar a la app de banco estado con clave de seguridad", videoSrc: "https://www.youtube.com/embed/ry_wfvpwk6s" },
+            { title: "Paso 3: Encontrar botón para hacer Trasnferencias", videoSrc: "https://www.youtube.com/embed/W4F-SQ-18G8" },
+            { title: "Paso 4: Seleccionar usuario para hacer transferencia.", videoSrc: "https://www.youtube.com/embed/TC6udYDNrHY" },
+            { title: "Paso 5: Ingresa el monto deseado", videoSrc: "https://www.youtube.com/embed/EkWl76y2u64" },
+            { title: "Paso 6: Autoriza con clave bePass", videoSrc: "https://www.youtube.com/embed/EkWl76y2u64" }, // Video reutilizado para completar el paso
+            { title: "Paso 7: Transferencia realizada.", videoSrc: "https://www.youtube.com/embed/wSNNEJAwTDM" }
         ];
 
         let currentStepIndex = 0;
@@ -318,7 +319,7 @@
                 <!-- Screen 5: Recipient Selection -->
                 <div class="screen" id="recipient-screen"><header class="standard-header"><button class="back-btn" data-target="home-screen"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><h2>Transferir</h2></header><main class="recipient-main"><div class="contact-list"><div class="contact-item" data-name="Maria Elena Maureira" data-rut="8.458.176-3" data-bank="BancoEstado" data-account-type="CuentaRUT" data-account-number="8458176"><div class="contact-avatar" style="background-color:#F06292;">MM</div><div class="contact-info"><p class="contact-name">Maria Elena Maureira</p><p class="contact-details">BancoEstado</p></div></div></div></main></div>
                 <!-- Screen 6: Transfer Details -->
-                <div class="screen" id="transfer-details-screen"><header class="standard-header"><button class="back-btn" data-target="recipient-screen"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><h2>Transferir</h2></header><main class="transfer-details-main"><div class="details-section"><h3>Cuenta de origen</h3><p>CuentaRUT 00020334694</p></div><div class="details-section"><h3>Destinatario</h3><p id="dest-name"></p><p id="dest-rut"></p></div><div class="details-section"><h3>Ingresa un monto</h3><input type="text" id="transfer-amount" class="form-input" placeholder="Ej.: 5000" readonly></div></main><footer class="sticky-footer"><button class="btn btn-primary-gray" id="continue-transfer-btn" disabled>Continuar</button></footer></div>
+                <div class="screen" id="transfer-details-screen"><header class="standard-header"><button class="back-btn" data-target="recipient-screen"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><h2>Transferir</h2></header><main class="transfer-details-main"><div class="details-section"><h3>Cuenta de origen</h3><p>CuentaRUT 00020334694</p></div><div class="details-section"><h3>Destinatario</h3><p id="dest-name"></p><p id="dest-rut"></p></div><div class="details-section"><h3>Ingresa un monto</h3><input type="text" id="transfer-amount" class="form-input" placeholder="Ej.: 5000" readonly></div></main><footer class="sticky-footer" id="transfer-details-footer"><button class="btn btn-primary-gray" id="continue-transfer-btn" disabled>Continuar</button></footer><footer class="keypad-footer" id="amount-keypad-footer" style="display: none;"><div class="keypad-actions"><button class="btn-keypad-action-primary" id="amount-keypad-done">Listo</button></div><div class="keypad" id="amount-keypad"></div></footer></div>
                 <!-- Screen 7: Confirmation -->
                 <div class="screen" id="confirmation-screen"><header class="standard-header"><button class="back-btn" data-target="transfer-details-screen"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><h2>Confirma y autoriza</h2></header><main class="confirmation-main"><div class="confirmation-summary"><p id="confirm-dest-name"></p><h2 id="confirm-amount"></h2></div><div class="confirmation-details"><div class="detail-row"><p>RUT</p><p id="confirm-rut"></p></div><div class="detail-row"><p>BANCO</p><p id="confirm-bank"></p></div></div><div class="authorization-section"><h3>Autorizar transferencia con:</h3><button class="btn btn-primary-alt">BE Face</button><button id="authorize-be-pass-btn" class="btn btn-secondary-alt">BE Pass</button></div></main></div>
                 <!-- Screen 8: BE Pass Modal -->
@@ -331,7 +332,12 @@
 
             const simScreens = simulatorContainer.querySelectorAll('.screen');
             const modalOverlays = simulatorContainer.querySelectorAll('.modal-overlay');
-            let pinAttempts = {};
+            let pinAttempts = {
+                loginPin: '',
+                bePassPin: '',
+                amount: '',
+                selectedRecipient: null
+            };
 
             const simNavigate = (targetId, isBack = false) => {
                 const currentScreen = simulatorContainer.querySelector('.screen.active');
@@ -349,6 +355,7 @@
             
             const createKeypad = (keypadId, onKeyPress) => {
                 const keypad = simulatorContainer.querySelector(`#${keypadId}`);
+                if(!keypad) return;
                 keypad.innerHTML = '';
                 const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, 'delete'];
                 keys.forEach(key => {
@@ -381,7 +388,6 @@
                 }
                 pinAttempts[pinVar] = newPin;
                 updatePinInputs(newPin, inputContainerId);
-                return newPin;
             };
 
             const showPinError = (containerId, errorMsgId, message) => {
@@ -398,6 +404,19 @@
             // --- Keypads Setup ---
             createKeypad('login-keypad', (key) => handlePinInput(key, 'loginPin', 4, 'login-pin-inputs'));
             createKeypad('be-pass-keypad', (key) => handlePinInput(key, 'bePassPin', 6, 'be-pass-pin-inputs'));
+            
+            const amountInput = simulatorContainer.querySelector('#transfer-amount');
+            createKeypad('amount-keypad', (key) => {
+                let currentAmount = pinAttempts.amount || '';
+                if (key === 'delete') {
+                    currentAmount = currentAmount.slice(0, -1);
+                } else if (currentAmount.length < 7) { // Limit to 7 digits
+                    currentAmount += key;
+                }
+                pinAttempts.amount = currentAmount;
+                const amountNumber = parseInt(currentAmount) || 0;
+                amountInput.value = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(amountNumber);
+            });
 
             // --- Event Listeners ---
             simulatorContainer.querySelector('#banco-estado-icon').addEventListener('click', () => simNavigate('login-screen'));
@@ -424,30 +443,31 @@
 
             simulatorContainer.querySelectorAll('.contact-item').forEach(item => {
                 item.addEventListener('click', () => {
-                    const recipient = item.dataset;
-                    pinAttempts.selectedRecipient = recipient;
-                    simulatorContainer.querySelector('#dest-name').textContent = recipient.name;
-                    simulatorContainer.querySelector('#dest-rut').textContent = recipient.rut;
+                    pinAttempts.selectedRecipient = item.dataset;
+                    simulatorContainer.querySelector('#dest-name').textContent = pinAttempts.selectedRecipient.name;
+                    simulatorContainer.querySelector('#dest-rut').textContent = pinAttempts.selectedRecipient.rut;
                     simNavigate('transfer-details-screen');
                 });
             });
             
-            const amountInput = simulatorContainer.querySelector('#transfer-amount');
+            // Amount screen logic
+            const continueFooter = simulatorContainer.querySelector('#transfer-details-footer');
+            const amountKeypadFooter = simulatorContainer.querySelector('#amount-keypad-footer');
             const continueBtn = simulatorContainer.querySelector('#continue-transfer-btn');
-            const observer = new MutationObserver(() => {
-                continueBtn.disabled = amountInput.value.trim() === '' || amountInput.value === 'Ej.: 5000';
+
+            amountInput.addEventListener('click', () => {
+                continueFooter.style.display = 'none';
+                amountKeypadFooter.style.display = 'block';
+            });
+            
+            simulatorContainer.querySelector('#amount-keypad-done').addEventListener('click', () => {
+                continueFooter.style.display = 'block';
+                amountKeypadFooter.style.display = 'none';
+                
+                const amount = parseInt(pinAttempts.amount || '0');
+                continueBtn.disabled = amount <= 0;
                 continueBtn.classList.toggle('active', !continueBtn.disabled);
             });
-            // This is a workaround for text input simulation
-            // A real keypad would trigger input events. We'll simulate with a timer.
-            setInterval(() => {
-                const amount = pinAttempts.amount || '0';
-                amountInput.value = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(parseInt(amount));
-                continueBtn.disabled = parseInt(amount) <= 0;
-                continueBtn.classList.toggle('active', !continueBtn.disabled);
-            }, 300);
-            createKeypad('be-pass-keypad', (key) => handlePinInput(key, 'amount', 7, '')); // A bit of a hack, no UI for amount pin
-            
 
             continueBtn.addEventListener('click', () => {
                 if(!continueBtn.disabled) {
@@ -479,12 +499,15 @@
                 }
             });
 
-            simulatorContainer.querySelectorAll('.back-btn').forEach(btn => {
-                btn.addEventListener('click', () => simNavigate(btn.dataset.target, true));
-            });
-            
-            modalOverlays.forEach(modal => {
-                modal.querySelector('.close-btn').addEventListener('click', () => modal.classList.remove('active'));
+            simulatorContainer.querySelectorAll('.back-btn, .close-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const target = e.currentTarget.dataset.target;
+                    if (target) simNavigate(target, true);
+                    
+                    // Close modal logic
+                    const modal = e.currentTarget.closest('.modal-overlay');
+                    if (modal) modal.classList.remove('active');
+                });
             });
 
             simulatorContainer.querySelector('#go-home-btn').addEventListener('click', () => {
@@ -494,3 +517,5 @@
     </script>
 </body>
 </html>
+
+
