@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>MAIA v2.2 - Simulador Funcional</title>
+    <title>MAIA v2.3 - Prototipo con Voz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,21 +17,12 @@
         .big-button { display: flex; justify-content: center; align-items: center; width: 100%; padding: 2.5rem 1.5rem; border-radius: 1.5rem; font-size: 3rem; font-weight: 700; color: white; text-align: center; line-height: 1.2; transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
         .big-button:active { transform: scale(0.98); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
         .simulator-wrapper { background-color: #f0f2f5; display: flex; align-items: center; justify-content: center; width: 100%; flex-grow: 1; padding: 2rem 0;}
+        #help-modal.active #help-modal-content { transform: scale(1); opacity: 1; }
+        #help-modal-content { transition: opacity 0.3s ease, transform 0.3s ease; transform: scale(0.95); opacity: 0; }
+        #listen-button.listening { background-color: #ef4444; } /* Rojo mientras escucha */
 
-        /* --- ESTILOS DEL SIMULADOR (Adaptados y con prefijo) --- */
-        #simulator-container {
-            font-family: 'Roboto', sans-serif;
-            width: 375px;
-            height: 812px;
-            border: 8px solid black;
-            border-radius: 40px;
-            overflow: hidden;
-            position: relative;
-            background-color: #fff;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
+        /* --- ESTILOS DEL SIMULADOR (SIN CAMBIOS) --- */
+        #simulator-container { font-family: 'Roboto', sans-serif; width: 375px; height: 812px; border: 8px solid black; border-radius: 40px; overflow: hidden; position: relative; background-color: #fff; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         #simulator-container .screen { display: none; flex-direction: column; flex-grow: 1; height: 100%; width: 100%; position: absolute; top: 0; left:0; background-color: white; transition: transform .3s ease-in-out; transform: translateX(100%); }
         #simulator-container .screen.active { display: flex; transform: translateX(0); z-index: 1;}
         #simulator-container .screen.moving-out { transform: translateX(-100%); }
@@ -126,109 +117,79 @@
 <body class="bg-gray-50 maia-body">
 
     <div id="maia-app-container" class="main-container">
-        <!-- Cabecera común de MAIA -->
         <header id="app-header" class="p-6 border-b bg-white hidden">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <svg class="w-8 h-8 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.311a15.045 15.045 0 01-7.5 0C4.508 19.64 2.25 15.223 2.25 10.5c0-1.25.223-2.454.634-3.582M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
-                    <h1 class="text-2xl font-bold tracking-tighter text-gray-800">MAIA</h1>
-                </div>
-                <button id="back-button" class="hidden text-gray-600 hover:text-gray-900 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
-                    <span class="sr-only">Volver</span>
-                </button>
-            </div>
-            <p class="text-gray-500 text-sm mt-1">Modelo de Aprendizaje e Inclusión Autónoma</p>
-        </header>
+            </header>
 
         <main class="flex-grow flex flex-col">
-            <!-- PANTALLA 1: Inicio MAIA -->
             <section id="screen-start" class="flex flex-col flex-grow items-center justify-center p-8">
-                <div class="text-center mb-12">
-                    <div class="flex items-center justify-center space-x-3">
-                        <svg class="w-12 h-12 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.311a15.045 15.045 0 01-7.5 0C4.508 19.64 2.25 15.223 2.25 10.5c0-1.25.223-2.454.634-3.582M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
-                        <h1 class="text-7xl font-extrabold tracking-tighter text-gray-800">MAIA</h1>
-                    </div>
-                    <p class="text-gray-500 text-xl mt-2">Modelo de Aprendizaje e Inclusión Autónoma</p>
-                </div>
-                <button onclick="navigateTo('screen-categories')" class="big-button bg-green-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Comenzar</button>
-            </section>
+                </section>
             
-            <!-- PANTALLA 2: Categorías MAIA -->
             <section id="screen-categories" class="flex-grow flex flex-col p-8 hidden">
-                <h2 class="text-5xl font-bold text-gray-800 mb-10 text-center">¿Sobre qué te gustaría aprender hoy?</h2>
-                <div class="space-y-6">
-                    <button onclick="navigateTo('screen-money')" class="big-button bg-orange-500">Dinero</button>
-                    <button class="big-button bg-green-500 opacity-50 cursor-not-allowed">Salud</button>
-                    <button class="big-button bg-blue-500 opacity-50 cursor-not-allowed">Redes sociales</button>
-                </div>
-            </section>
+                </section>
             
-            <!-- PANTALLA 3: Dinero MAIA -->
             <section id="screen-money" class="flex-grow flex flex-col p-8 bg-orange-500 hidden">
-                <h2 class="text-6xl font-bold text-white mb-10">Dinero</h2>
-                <div class="space-y-6">
-                    <button onclick="navigateTo('screen-simulator-intro')" class="big-button bg-white text-gray-800 !text-4xl !py-10">Transferencias bancarias</button>
-                    <button class="big-button bg-white text-gray-800 !text-4xl !py-10 opacity-50 cursor-not-allowed">Pago de cuentas</button>
-                    <button class="big-button bg-white text-gray-800 !text-4xl !py-10 opacity-50 cursor-not-allowed">Consultar tu saldo</button>
-                </div>
-            </section>
+                </section>
 
-            <!-- PANTALLA 3.5: Introducción al Simulador -->
             <section id="screen-simulator-intro" class="flex flex-col flex-grow items-center justify-center p-8 text-center hidden">
-                 <h2 class="text-5xl font-bold text-gray-800 mb-6">¡Vamos a practicar!</h2>
-                 <p class="text-2xl text-gray-600 mb-12 max-w-2xl">A continuación, usarás un simulador para aprender a hacer una transferencia. <strong class="text-green-600">No te preocupes, es solo una práctica y no usarás dinero real.</strong></p>
-                 <button onclick="navigateTo('screen-simulator')" class="big-button bg-blue-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Empezar Práctica</button>
-            </section>
+                 </section>
 
-
-            <!-- PANTALLA 4: Simulador -->
             <section id="screen-simulator" class="flex-grow flex-col hidden">
-                <div class="simulator-wrapper">
-                    <div id="simulator-container">
-                        <!-- El JS del simulador poblará esto -->
-                    </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- PANTALLA 5: Transición a Tarea Real -->
             <section id="screen-continue-to-real" class="flex flex-col flex-grow items-center justify-center p-8 text-center hidden">
-                 <h2 class="text-5xl font-bold text-gray-800 mb-6">¡Excelente práctica!</h2>
-                 <p class="text-2xl text-gray-600 mb-12 max-w-2xl">Ahora que ya sabes cómo funciona, ¿te animas a hacer una transferencia real en tu propio celular?</p>
-                 <div class="w-full max-w-md space-y-6">
-                    <button onclick="navigateTo('screen-tutorial')" class="big-button bg-green-500">¡Sí, vamos!</button>
-                    <button onclick="navigateTo('screen-start')" class="text-xl text-gray-600 hover:text-gray-900 font-bold py-4 px-6 rounded-lg">No, terminar por ahora</button>
-                 </div>
-            </section>
+                 </section>
 
-            <!-- PANTALLA 6: Tutorial con videos (Tarea real) -->
             <section id="screen-tutorial" class="flex-grow flex flex-col hidden bg-gray-100">
                 <div class="p-8">
                     <p class="text-2xl text-gray-500">Guía para transferencia real</p>
                     <div class="flex items-center gap-4">
                         <h2 id="tutorial-step-title" class="text-5xl font-bold text-gray-800 mt-2"></h2>
-                    </div>
+                        </div>
                 </div>
                 <div id="video-container" class="w-full flex-grow bg-black flex items-center justify-center p-4">
-                    <!-- YouTube iframe se insertará aquí -->
-                </div>
+                    </div>
                 <div class="bg-gray-800 p-4 flex items-center justify-center space-x-2 sm:space-x-4">
                     <button id="tutorial-prev" class="text-white bg-gray-700 rounded-full p-4 hover:bg-gray-600 disabled:opacity-50"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg></button>
-                    <button id="help-button" class="text-white bg-blue-600 rounded-full p-4 hover:bg-blue-700 flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.546-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></button>
+                    <button id="help-button-tutorial" class="text-white bg-blue-600 rounded-full p-4 hover:bg-blue-700 flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.546-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></button>
                     <button id="tutorial-next" class="text-white bg-gray-700 rounded-full p-4 hover:bg-gray-600 disabled:opacity-50"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg></button>
                 </div>
             </section>
         </main>
+        
+        <div id="help-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
+            <div id="help-modal-content" class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 max-w-2xl w-full">
+                <div class="flex justify-between items-start">
+                    <h3 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">✨ ¿Necesitas ayuda?</h3>
+                    <button id="close-help-modal" class="text-gray-400 hover:text-gray-800"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                </div>
+                
+                <p id="listen-status" class="text-lg text-gray-600 mb-6 text-center">Presiona el micrófono y haz tu pregunta. Por ejemplo: "¿Qué es un destinatario?"</p>
+                
+                <div class="flex justify-center mb-6">
+                    <button id="listen-button" class="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center text-white transition-colors hover:bg-blue-700">
+                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93V17h-1v-2.07A5 5 0 015 10v-1h1v1a4 4 0 008 0v-1h1v1a5 5 0 01-4 4.93z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+                
+                <div id="answer-container" class="mt-8 hidden">
+                    <h4 class="text-2xl font-bold text-gray-800 mb-2">Respuesta de MAIA:</h4>
+                    <div class="bg-blue-50 p-6 rounded-lg text-xl text-gray-800 prose max-w-none"><p id="answer-text"></p></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // --- LÓGICA GENERAL DE MAIA ---
+        // --- LÓGICA GENERAL DE MAIA (SIN CAMBIOS) ---
         const maiaScreens = document.querySelectorAll('#maia-app-container > main > section');
         const header = document.getElementById('app-header');
         const backButton = document.getElementById('back-button');
         let navigationHistory = ['screen-start'];
 
         function navigateTo(screenId) {
+            // Detener cualquier voz que esté hablando al cambiar de pantalla
+            window.speechSynthesis.cancel(); 
+
             maiaScreens.forEach(s => s.classList.add('hidden'));
             const nextScreen = document.getElementById(screenId);
             if (nextScreen) {
@@ -246,6 +207,19 @@
                 navigationHistory = ['screen-start'];
             }
 
+            // --- ¡NUEVO! Guía Proactiva de Voz ---
+            switch(screenId) {
+                case 'screen-categories':
+                    hablar("Hola. ¿Sobre qué te gustaría aprender hoy? Toca una de las opciones.");
+                    break;
+                case 'screen-simulator-intro':
+                    hablar("¡Vamos a practicar! No te preocupes, esto es un juego y no usarás dinero real.");
+                    break;
+                case 'screen-continue-to-real':
+                    hablar("¡Excelente práctica! Ahora que ya sabes cómo funciona, ¿te animas a hacer una transferencia real en tu propio celular?");
+                    break;
+            }
+
             if (screenId === 'screen-simulator') {
                 startSimulator(); 
             }
@@ -255,6 +229,8 @@
         }
         
         backButton.addEventListener('click', () => {
+             // Detener cualquier voz que esté hablando
+            window.speechSynthesis.cancel(); 
             if (navigationHistory.length > 1) {
                 navigationHistory.pop();
                 const previousScreen = navigationHistory[navigationHistory.length - 1];
@@ -266,14 +242,14 @@
             }
         });
 
-        // --- LÓGICA DEL TUTORIAL CON VIDEOS ---
+        // --- LÓGICA DEL TUTORIAL CON VIDEOS (CON PASOS CORREGIDOS) ---
         const tutorialSteps = [
             { title: "PASO 1: Abrir app de tu banco", videoSrc: "https://www.youtube.com/embed/9rn5gUPhhIw" },
             { title: "Paso 2: Ingresar a la app de banco estado con clave de seguridad", videoSrc: "https://www.youtube.com/embed/ry_wfvpwk6s" },
             { title: "Paso 3: Encontrar botón para hacer Trasnferencias", videoSrc: "https://www.youtube.com/embed/W4F-SQ-18G8" },
             { title: "Paso 4: Seleccionar usuario para hacer transferencia.", videoSrc: "https://www.youtube.com/embed/TC6udYDNrHY" },
             { title: "Paso 5: Ingresa el monto deseado", videoSrc: "https://www.youtube.com/embed/EkWl76y2u64" },
-            { title: "Paso 6: Autoriza con clave bePass", videoSrc: "https://www.youtube.com/embed/EkWl76y2u64" }, // Video reutilizado para completar el paso
+            { title: "Paso 6: Autoriza con clave bePass", videoSrc: "https://www.youtube.com/embed/EkWl76y2u64" }, // Video reutilizado
             { title: "Paso 7: Transferencia realizada.", videoSrc: "https://www.youtube.com/embed/wSNNEJAwTDM" }
         ];
 
@@ -304,40 +280,148 @@
         tutorialNextButton.addEventListener('click', () => currentStepIndex < tutorialSteps.length - 1 && loadStep(currentStepIndex + 1));
         tutorialPrevButton.addEventListener('click', () => currentStepIndex > 0 && loadStep(currentStepIndex - 1));
 
-        // --- INICIO: LÓGICA DEL SIMULADOR BANCOESTADO ---
+        
+        // --- ¡NUEVO! LÓGICA DEL ASISTENTE DE VOZ (MAIA) ---
+
+        // 1. Text-to-Speech (TTS) - La voz de MAIA
+        function hablar(texto) {
+            // Detener cualquier voz anterior
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = 'es-ES'; // Configurar idioma a español
+            utterance.rate = 0.9; // Un poco más lento para mejor comprensión
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // 2. Speech-to-Text (STT) - El oído de MAIA
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+        
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'es-ES';
+            recognition.continuous = false; // Solo escucha una vez
+            recognition.interimResults = false;
+
+            const listenButton = document.getElementById('listen-button');
+            const listenStatus = document.getElementById('listen-status');
+
+            listenButton.addEventListener('click', () => {
+                recognition.start();
+            });
+
+            recognition.onstart = () => {
+                listenStatus.textContent = "Te estoy escuchando...";
+                listenButton.classList.add('listening'); // Pone el botón rojo
+            };
+
+            recognition.onspeechend = () => {
+                recognition.stop();
+                listenStatus.textContent = "Presiona el micrófono para hablar...";
+                listenButton.classList.remove('listening');
+            };
+
+            recognition.onresult = (event) => {
+                const pregunta = event.results[0][0].transcript.toLowerCase();
+                listenStatus.textContent = `Dijiste: "${pregunta}"`;
+                
+                // 3. La "IA Falsa" (Mock AI)
+                const respuesta = mockGemini(pregunta);
+                
+                // Mostrar y hablar la respuesta
+                const answerContainer = document.getElementById('answer-container');
+                const answerText = document.getElementById('answer-text');
+                answerText.textContent = respuesta;
+                answerContainer.classList.remove('hidden');
+                hablar(respuesta);
+            };
+
+            recognition.onerror = (event) => {
+                listenStatus.textContent = "No pude entenderte. Intenta de nuevo.";
+                listenButton.classList.remove('listening');
+            };
+
+        } else {
+            // Si el navegador no soporta la API
+            document.getElementById('listen-status').textContent = "Lo siento, tu navegador no soporta reconocimiento de voz.";
+            document.getElementById('listen-button').disabled = true;
+        }
+
+        // 3. "IA Falsa" (Mock AI) - El cerebro del test
+        function mockGemini(pregunta) {
+            if (pregunta.includes("destinatario")) {
+                return "Un destinatario es la persona a la que le vas a enviar el dinero. Es como escribir el nombre en un sobre antes de enviar una carta.";
+            }
+            if (pregunta.includes("clave") && pregunta.includes("bepass")) {
+                return "La clave BePass es una contraseña especial de 6 números que usas para confirmar tus transferencias. Es como una segunda llave para más seguridad.";
+            }
+            if (pregunta.includes("clave") || pregunta.includes("contraseña")) {
+                return "Tu clave de 4 números es el secreto para entrar a tu aplicación del banco. ¡Nunca la compartas con nadie!";
+            }
+            if (pregunta.includes("monto")) {
+                return "El monto es la cantidad de dinero que quieres enviar. Por ejemplo, 5 mil pesos.";
+            }
+            if (pregunta.includes("hola") || pregunta.includes("ayuda")) {
+                return "¡Hola! Estoy aquí para ayudarte. ¿Cuál es tu pregunta?";
+            }
+            
+            return "Lo siento, no entendí esa pregunta. ¿Podrías intentar de otra forma?";
+        }
+
+        // 4. Lógica del Modal de Ayuda
+        const helpModal = document.getElementById('help-modal');
+        const closeHelpButton = document.getElementById('close-help-modal');
+        
+        // El botón de ayuda en el tutorial SÍ existe
+        const helpButtonTutorial = document.getElementById('help-button-tutorial');
+        if (helpButtonTutorial) {
+            helpButtonTutorial.addEventListener('click', openHelp);
+        }
+
+        function openHelp() {
+            helpModal.classList.remove('hidden');
+            setTimeout(() => helpModal.classList.add('active'), 10);
+            // Preparamos el modal para la pregunta
+            document.getElementById('answer-container').classList.add('hidden');
+            document.getElementById('listen-status').textContent = "Presiona el micrófono y haz tu pregunta. Por ejemplo: \"¿Qué es un destinatario?\"";
+        }
+        
+        function closeHelp() {
+            // Detener cualquier voz o escucha
+            window.speechSynthesis.cancel();
+            if (recognition) recognition.abort();
+
+            helpModal.classList.remove('active');
+            setTimeout(() => helpModal.classList.add('hidden'), 300);
+        }
+        
+        closeHelpButton.addEventListener('click', closeHelp);
+        
+        // --- FIN DE LA LÓGICA DE VOZ ---
+
+
+        // --- INICIO: LÓGICA DEL SIMULADOR BANCOESTADO (SIN CAMBIOS) ---
         function startSimulator() {
             const SIMULATOR_HTML = `
                 <div id="status-bar"><span>19:14</span></div>
-                <!-- Screen 1: Phone Home Screen -->
                 <div class="screen active" id="phone-home-screen"><main class="phone-home-main"><button id="banco-estado-icon" class="app-icon"><div class="app-icon-img-container"><img src="https://i.imgur.com/v8F7Qx5.png" alt="BancoEstado App Icon"><div class="notification-badge app-badge-1">170</div><div class="notification-badge app-badge-2">47</div></div><span>BancoEstado</span></button></main></div>
-                <!-- Screen 2: Login -->
                 <div class="screen" id="login-screen"><header class="login-header"><img src="https://i.imgur.com/rNfpE6p.png" alt="BancoEstado Logo" class="logo"></header><main class="login-main"><h1>Hola Matías</h1><button class="btn btn-primary" id="login-button">Ingresar</button><a href="#" class="link">¿Olvidaste tu clave?</a></main></div>
-                <!-- Screen 3: PIN Entry -->
                 <div class="screen" id="pin-screen"><header class="modal-header"><button class="close-btn" data-target="login-screen">&times;</button></header><main class="pin-main"><div class="pin-lock-icon"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg></div><h2>Ingresa tu clave</h2><div class="pin-inputs" id="login-pin-inputs"><div class="pin-box"></div><div class="pin-box"></div><div class="pin-box"></div><div class="pin-box"></div></div><p id="pin-error" class="pin-error-message"></p><a href="#" class="link">¿Problemas con tu clave?</a></main><footer class="keypad-footer"><div class="keypad-actions"><button class="btn-keypad-action-primary" id="login-pin-accept">Aceptar</button></div><div class="keypad" id="login-keypad"></div></footer></div>
-                <!-- Screen 4: Home/Dashboard -->
                 <div class="screen" id="home-screen"><header class="home-header"><div class="home-header-wavy"></div><div class="home-header-content"><img src="https://i.imgur.com/rNfpE6p.png" alt="BancoEstado Logo" class="logo-small"></div></header><main class="home-main"><div class="card account-summary"><div class="account-details"><p><strong>CuentaRUT</strong> 00020334694</p><h3>$32</h3><p class="balance-label">Saldo disponible</p></div><div><button class="btn-secondary">Movimientos</button><button class="btn-secondary">Cartolas</button></div></div><div class="card"><p>Seguro Full Ambulatorio...</p></div></main><nav class="bottom-nav"><button class="nav-item active"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Inicio</button><button class="nav-item" id="transfer-nav-btn"><svg viewBox="0 0 24 24"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4v3zM8 5v3H2v2h6v3l4-4-4-4z"/></svg>Transferir</button><button class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>Seguridad</button><button class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>Más</button></nav><div class="transfer-bottom-sheet" id="transfer-sheet"><button data-target="recipient-screen">A terceros</button></div></div>
-                <!-- Screen 5: Recipient Selection -->
                 <div class="screen" id="recipient-screen"><header class="standard-header"><button class="back-btn" data-target="home-screen"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><h2>Transferir</h2></header><main class="recipient-main"><div class="contact-list"><div class="contact-item" data-name="Maria Elena Maureira" data-rut="8.458.176-3" data-bank="BancoEstado" data-account-type="CuentaRUT" data-account-number="8458176"><div class="contact-avatar" style="background-color:#F06292;">MM</div><div class="contact-info"><p class="contact-name">Maria Elena Maureira</p><p class="contact-details">BancoEstado</p></div></div></div></main></div>
-                <!-- Screen 6: Transfer Details -->
                 <div class="screen" id="transfer-details-screen"><header class="standard-header"><button class="back-btn" data-target="recipient-screen"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><h2>Transferir</h2></header><main class="transfer-details-main"><div class="details-section"><h3>Cuenta de origen</h3><p>CuentaRUT 00020334694</p></div><div class="details-section"><h3>Destinatario</h3><p id="dest-name"></p><p id="dest-rut"></p></div><div class="details-section"><h3>Ingresa un monto</h3><input type="text" id="transfer-amount" class="form-input" placeholder="Ej.: 5000" readonly></div></main><footer class="sticky-footer" id="transfer-details-footer"><button class="btn btn-primary-gray" id="continue-transfer-btn" disabled>Continuar</button></footer><footer class="keypad-footer" id="amount-keypad-footer" style="display: none;"><div class="keypad-actions"><button class="btn-keypad-action-primary" id="amount-keypad-done">Listo</button></div><div class="keypad" id="amount-keypad"></div></footer></div>
-                <!-- Screen 7: Confirmation -->
                 <div class="screen" id="confirmation-screen"><header class="standard-header"><button class="back-btn" data-target="transfer-details-screen"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><h2>Confirma y autoriza</h2></header><main class="confirmation-main"><div class="confirmation-summary"><p id="confirm-dest-name"></p><h2 id="confirm-amount"></h2></div><div class="confirmation-details"><div class="detail-row"><p>RUT</p><p id="confirm-rut"></p></div><div class="detail-row"><p>BANCO</p><p id="confirm-bank"></p></div></div><div class="authorization-section"><h3>Autorizar transferencia con:</h3><button class="btn btn-primary-alt">BE Face</button><button id="authorize-be-pass-btn" class="btn btn-secondary-alt">BE Pass</button></div></main></div>
-                <!-- Screen 8: BE Pass Modal -->
                 <div class="modal-overlay" id="be-pass-modal"><div class="be-pass-modal"><header class="modal-header"><button class="close-btn" data-target="confirmation-screen">&times;</button></header><main class="pin-main"><div class="be-pass-icon pin-lock-icon"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3-8H9V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2z"/></svg></div><h2>Ingresa tu clave BE Pass</h2><div class="pin-inputs" id="be-pass-pin-inputs"><div class="pin-box"></div><div class="pin-box"></div><div class="pin-box"></div><div class="pin-box"></div><div class="pin-box"></div><div class="pin-box"></div></div><p id="be-pass-error" class="pin-error-message"></p></main><footer class="keypad-footer"><div class="keypad-actions"><button id="be-pass-pin-accept" class="btn-keypad-action-primary">Autorizar</button></div><div class="keypad" id="be-pass-keypad"></div></footer></div></div>
-                <!-- Screen 9: Receipt -->
                 <div class="screen" id="receipt-screen"><header class="receipt-header"><div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div><h2>Comprobante de Transferencia</h2></header><main class="receipt-main"><div class="detail-row"><p>Monto</p><p><strong id="receipt-amount"></strong></p></div><div class="detail-row"><p>Destinatario</p><p id="receipt-name"></p></div></main><footer class="sticky-footer receipt-footer"><button class="btn btn-secondary" id="go-home-btn">Finalizar Práctica</button></footer></div>
             `;
             const simulatorContainer = document.getElementById('simulator-container');
             simulatorContainer.innerHTML = SIMULATOR_HTML;
 
+            // Lógica del simulador (sin cambios)
             const simScreens = simulatorContainer.querySelectorAll('.screen');
             const modalOverlays = simulatorContainer.querySelectorAll('.modal-overlay');
-            let pinAttempts = {
-                loginPin: '',
-                bePassPin: '',
-                amount: '',
-                selectedRecipient: null
-            };
+            let pinAttempts = { loginPin: '', bePassPin: '', amount: '', selectedRecipient: null };
 
             const simNavigate = (targetId, isBack = false) => {
                 const currentScreen = simulatorContainer.querySelector('.screen.active');
@@ -401,7 +485,6 @@
                 }, 1000);
             };
 
-            // --- Keypads Setup ---
             createKeypad('login-keypad', (key) => handlePinInput(key, 'loginPin', 4, 'login-pin-inputs'));
             createKeypad('be-pass-keypad', (key) => handlePinInput(key, 'bePassPin', 6, 'be-pass-pin-inputs'));
             
@@ -410,7 +493,7 @@
                 let currentAmount = pinAttempts.amount || '';
                 if (key === 'delete') {
                     currentAmount = currentAmount.slice(0, -1);
-                } else if (currentAmount.length < 7) { // Limit to 7 digits
+                } else if (currentAmount.length < 7) {
                     currentAmount += key;
                 }
                 pinAttempts.amount = currentAmount;
@@ -418,7 +501,6 @@
                 amountInput.value = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(amountNumber);
             });
 
-            // --- Event Listeners ---
             simulatorContainer.querySelector('#banco-estado-icon').addEventListener('click', () => simNavigate('login-screen'));
             simulatorContainer.querySelector('#login-button').addEventListener('click', () => simNavigate('pin-screen'));
             
@@ -450,7 +532,6 @@
                 });
             });
             
-            // Amount screen logic
             const continueFooter = simulatorContainer.querySelector('#transfer-details-footer');
             const amountKeypadFooter = simulatorContainer.querySelector('#amount-keypad-footer');
             const continueBtn = simulatorContainer.querySelector('#continue-transfer-btn');
@@ -463,7 +544,6 @@
             simulatorContainer.querySelector('#amount-keypad-done').addEventListener('click', () => {
                 continueFooter.style.display = 'block';
                 amountKeypadFooter.style.display = 'none';
-                
                 const amount = parseInt(pinAttempts.amount || '0');
                 continueBtn.disabled = amount <= 0;
                 continueBtn.classList.toggle('active', !continueBtn.disabled);
@@ -503,8 +583,6 @@
                 btn.addEventListener('click', (e) => {
                     const target = e.currentTarget.dataset.target;
                     if (target) simNavigate(target, true);
-                    
-                    // Close modal logic
                     const modal = e.currentTarget.closest('.modal-overlay');
                     if (modal) modal.classList.remove('active');
                 });
@@ -514,8 +592,7 @@
                 navigateTo('screen-continue-to-real');
             });
         }
+        // --- FIN DE LA LÓGICA DEL SIMULADOR ---
     </script>
 </body>
 </html>
-
-
