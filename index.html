@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>MAIA v3.1 - Corrección Inicialización STT</title>
+    <title>MAIA v3.2 - Corrección Comentarios HTML</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,8 +50,7 @@
 
         /* --- ESTILOS DEL SIMULADOR --- */
         #simulator-container { font-family: 'Roboto', sans-serif; width: 360px; height: 740px; /* Slightly smaller */ border: 6px solid black; border-radius: 36px; overflow: hidden; position: relative; background-color: #fff; display: flex; flex-direction: column; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        /* ... (Resto de estilos del simulador sin cambios) ... */
-         #simulator-container .screen { display: none; flex-direction: column; flex-grow: 1; height: 100%; width: 100%; position: absolute; top: 0; left:0; background-color: white; transition: transform .3s ease-in-out; transform: translateX(100%); }
+        #simulator-container .screen { display: none; flex-direction: column; flex-grow: 1; height: 100%; width: 100%; position: absolute; top: 0; left:0; background-color: white; transition: transform .3s ease-in-out; transform: translateX(100%); }
         #simulator-container .screen.active { display: flex; transform: translateX(0); z-index: 1;}
         #simulator-container .screen.moving-out { transform: translateX(-100%); }
         #simulator-container #status-bar { display: flex; justify-content: space-between; padding: 10px 20px; font-size: 14px; font-weight: 500; position: absolute; top: 0; left: 0; right: 0; z-index: 1000; color: black;}
@@ -155,22 +154,113 @@
 <body class="bg-gray-50 maia-body">
 
     <div id="maia-app-container" class="main-container">
-        <!-- Cabecera y Pantallas MAIA (HTML sin cambios) -->
-         <header id="app-header" class="p-6 border-b bg-white hidden"> /* ... */ </header>
-         <main class="flex-grow flex flex-col">
-             <section id="screen-start"> /* ... */ </section>
-             <section id="screen-categories" class="hidden"> /* ... */ </section>
-             <section id="screen-money" class="hidden"> /* ... */ </section>
-             <section id="screen-simulator-intro" class="hidden"> /* ... */ </section>
-             <section id="screen-simulator" class="hidden">
-                 <div class="simulator-wrapper"><div id="simulator-container"></div></div>
-             </section>
-             <section id="screen-continue-to-real" class="hidden"> /* ... */ </section>
-             <section id="screen-tutorial" class="hidden"> /* ... */ </section>
-         </main>
-         <div id="help-modal" class="hidden"> /* ... */ </div>
+        <!-- Cabecera -->
+        <header id="app-header" class="p-6 border-b bg-white hidden">
+             <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.311a15.045 15.045 0 01-7.5 0C4.508 19.64 2.25 15.223 2.25 10.5c0-1.25.223-2.454.634-3.582M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
+                    <h1 class="text-2xl font-bold tracking-tighter text-gray-800">MAIA</h1>
+                </div>
+                <button id="back-button" class="hidden text-gray-600 hover:text-gray-900 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                    <span class="sr-only">Volver</span>
+                </button>
+            </div>
+            <p class="text-gray-500 text-sm mt-1">Modelo de Aprendizaje e Inclusión Autónoma</p>
+        </header>
 
-         <!-- NUEVO: Botón Flotante de Ayuda -->
+        <main class="flex-grow flex flex-col">
+            <!-- Pantalla Inicio -->
+             <section id="screen-start" class="flex flex-col flex-grow items-center justify-center p-8">
+                 <div class="text-center mb-12">
+                    <div class="flex items-center justify-center space-x-3">
+                        <svg class="w-12 h-12 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.311a15.045 15.045 0 01-7.5 0C4.508 19.64 2.25 15.223 2.25 10.5c0-1.25.223-2.454.634-3.582M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
+                        <h1 class="text-7xl font-extrabold tracking-tighter text-gray-800">MAIA</h1>
+                    </div>
+                    <p class="text-gray-500 text-xl mt-2">Modelo de Aprendizaje e Inclusión Autónoma</p>
+                </div>
+                <button onclick="navigateTo('screen-categories')" class="big-button bg-green-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Comenzar</button>
+            </section>
+             <!-- Pantalla Categorías -->
+             <section id="screen-categories" class="flex-grow flex flex-col p-8 hidden">
+                 <h2 class="text-5xl font-bold text-gray-800 mb-10 text-center">¿Sobre qué te gustaría aprender hoy?</h2>
+                <div class="space-y-6">
+                    <button onclick="navigateTo('screen-money')" class="big-button bg-orange-500">Dinero</button>
+                    <button class="big-button bg-green-500 opacity-50 cursor-not-allowed">Salud</button>
+                    <button class="big-button bg-blue-500 opacity-50 cursor-not-allowed">Redes sociales</button>
+                </div>
+            </section>
+             <!-- Pantalla Dinero -->
+             <section id="screen-money" class="flex-grow flex flex-col p-8 bg-orange-500 hidden">
+                 <h2 class="text-6xl font-bold text-white mb-10">Dinero</h2>
+                <div class="space-y-6">
+                    <button onclick="navigateTo('screen-simulator-intro')" class="big-button bg-white text-gray-800 !text-4xl !py-10">Transferencias bancarias</button>
+                    <button class="big-button bg-white text-gray-800 !text-4xl !py-10 opacity-50 cursor-not-allowed">Pago de cuentas</button>
+                    <button class="big-button bg-white text-gray-800 !text-4xl !py-10 opacity-50 cursor-not-allowed">Consultar tu saldo</button>
+                </div>
+            </section>
+             <!-- Pantalla Intro Simulador -->
+            <section id="screen-simulator-intro" class="flex flex-col flex-grow items-center justify-center p-8 text-center hidden">
+                  <h2 class="text-5xl font-bold text-gray-800 mb-6">¡Vamos a practicar!</h2>
+                 <p class="text-2xl text-gray-600 mb-12 max-w-2xl">A continuación, usarás un simulador para aprender a hacer una transferencia. <strong class="text-green-600">No te preocupes, es solo una práctica y no usarás dinero real.</strong></p>
+                 <button onclick="navigateTo('screen-simulator')" class="big-button bg-blue-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Empezar Práctica</button>
+            </section>
+             <!-- Pantalla Simulador -->
+             <section id="screen-simulator" class="flex-grow flex-col hidden">
+                 <div class="simulator-wrapper">
+                    <div id="simulator-container">
+                        <!-- El JS del simulador poblará esto -->
+                    </div>
+                </div>
+            </section>
+             <!-- Pantalla Continuar a Real -->
+            <section id="screen-continue-to-real" class="flex flex-col flex-grow items-center justify-center p-8 text-center hidden">
+                  <h2 class="text-5xl font-bold text-gray-800 mb-6">¡Excelente práctica!</h2>
+                 <p class="text-2xl text-gray-600 mb-12 max-w-2xl">Ahora que ya sabes cómo funciona, ¿te animas a hacer una transferencia real en tu propio celular?</p>
+                 <div class="w-full max-w-md space-y-6">
+                    <button onclick="navigateTo('screen-tutorial')" class="big-button bg-green-500">¡Sí, vamos!</button>
+                    <button onclick="navigateTo('screen-start')" class="text-xl text-gray-600 hover:text-gray-900 font-bold py-4 px-6 rounded-lg">No, terminar por ahora</button>
+                 </div>
+            </section>
+             <!-- Pantalla Tutorial Videos -->
+             <section id="screen-tutorial" class="flex-grow flex flex-col hidden bg-gray-100">
+                <div class="p-8">
+                    <p class="text-2xl text-gray-500">Guía para transferencia real</p>
+                    <div class="flex items-center gap-4">
+                        <h2 id="tutorial-step-title" class="text-5xl font-bold text-gray-800 mt-2"></h2>
+                    </div>
+                </div>
+                <div id="video-container" class="w-full flex-grow bg-black flex items-center justify-center p-4">
+                    <!-- YouTube iframe se insertará aquí -->
+                </div>
+                <div class="bg-gray-800 p-4 flex items-center justify-center space-x-2 sm:space-x-4">
+                    <button id="tutorial-prev" class="text-white bg-gray-700 rounded-full p-4 hover:bg-gray-600 disabled:opacity-50"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg></button>
+                    <button id="help-button-tutorial" class="text-white bg-blue-600 rounded-full p-4 hover:bg-blue-700 flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.546-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></button>
+                    <button id="tutorial-next" class="text-white bg-gray-700 rounded-full p-4 hover:bg-gray-600 disabled:opacity-50"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg></button>
+                </div>
+            </section>
+         </main>
+          <!-- Modal de Ayuda -->
+         <div id="help-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
+            <div id="help-modal-content" class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 max-w-2xl w-full">
+                <div class="flex justify-between items-start">
+                    <h3 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">✨ ¿Necesitas ayuda?</h3>
+                    <button id="close-help-modal" class="text-gray-400 hover:text-gray-800"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                </div>
+                <p id="listen-status" class="text-lg text-gray-600 mb-6 text-center">Presiona el micrófono y haz tu pregunta. Por ejemplo: "¿Qué es un destinatario?"</p>
+                <div class="flex justify-center mb-6">
+                    <button id="listen-button" class="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center text-white transition-colors hover:bg-blue-700">
+                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93V17h-1v-2.07A5 5 0 015 10v-1h1v1a4 4 0 008 0v-1h1v1a5 5 0 01-4 4.93z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+                <div id="answer-container" class="mt-8 hidden">
+                    <h4 class="text-2xl font-bold text-gray-800 mb-2">Respuesta de MAIA:</h4>
+                    <div class="bg-blue-50 p-6 rounded-lg text-xl text-gray-800 prose max-w-none"><p id="answer-text"></p></div>
+                </div>
+            </div>
+        </div>
+
+         <!-- Botón Flotante de Ayuda -->
          <button id="maia-fab-help" class="hidden" title="Pedir ayuda a MAIA">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
@@ -189,11 +279,11 @@
         const fabHelpButton = document.getElementById('maia-fab-help');
         let navigationHistory = ['screen-start'];
 
-        // --- Variables Globales para STT ---
+        // --- Variables Globales para STT (definidas fuera de DOMContentLoaded) ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition;
-        let listenButton = null; // Inicializar como null
-        let listenStatus = null; // Inicializar como null
+        let listenButton = null;
+        let listenStatus = null;
 
 
         function navigateTo(screenId) {
@@ -253,7 +343,7 @@
         // --- FIN TTS con Gemini ---
 
         // --- STT (Oído) ---
-        // (Inicialización movida a DOMContentLoaded)
+        // (Inicialización y asignación de handlers movida a DOMContentLoaded)
 
         // --- Llamada a Gemini LLM ---
         async function askRealGemini(userQuestion) { /* ... Lógica askRealGemini sin cambios ... */ }
@@ -275,13 +365,41 @@
             handleReadAloud(''); // Detener voz proactiva
             if (helpModal) {
                 // CORRECCIÓN: Obtener elementos AQUI, dentro de openHelp
+                // Assign to global variables
                 listenButton = document.getElementById('listen-button');
                 listenStatus = document.getElementById('listen-status');
 
                 if (!listenButton || !listenStatus) {
                      console.error("Could not find listen button or status inside openHelp!");
+                     // Attempt to show modal anyway, but disable listening
+                     helpModal.classList.remove('hidden');
+                     setTimeout(() => helpModal.classList.add('active'), 10);
+                     const answerContainer = document.getElementById('answer-container');
+                     if (answerContainer) answerContainer.classList.add('hidden');
+                     // Display error if possible
+                     const tempStatus = document.getElementById('listen-status'); // Try finding it again just in case
+                     if(tempStatus) tempStatus.textContent = "Error: No se encontró el botón del micrófono.";
                      return; // Salir si los elementos no existen
                 }
+
+                 // CORRECCIÓN: Add event listener HERE, only once if not already added
+                 // Check if listener already exists to avoid duplicates
+                 if (!listenButton.dataset.listenerAttached) {
+                     listenButton.addEventListener('click', () => {
+                        try {
+                          if (recognition && !listenButton.classList.contains('listening')) {
+                              recognition.start();
+                              listenButton.disabled = true;
+                          }
+                        } catch (e) {
+                           console.error("Error starting recognition:", e);
+                           if(listenStatus) listenStatus.textContent = "Error al iniciar escucha. ¿Permitiste el micrófono?";
+                           if(listenButton) listenButton.disabled = false;
+                        }
+                     });
+                     listenButton.dataset.listenerAttached = 'true'; // Mark as attached
+                 }
+
 
                 helpModal.classList.remove('hidden');
                 setTimeout(() => helpModal.classList.add('active'), 10);
@@ -292,6 +410,7 @@
                 listenButton.classList.remove('listening');
             } else { console.error("Help modal element not found!"); }
         }
+
 
         function closeHelp() {
             handleReadAloud('');
@@ -321,24 +440,33 @@
 
                 // Assign event handlers to the global recognition object
                  recognition.onstart = () => {
-                    if (listenStatus) listenStatus.textContent = "Te estoy escuchando...";
-                    if (listenButton) listenButton.classList.add('listening');
+                    // Query elements *inside* the handler, as they might not exist yet globally
+                    const currentListenStatus = document.getElementById('listen-status');
+                    const currentListenButton = document.getElementById('listen-button');
+                    if (currentListenStatus) currentListenStatus.textContent = "Te estoy escuchando...";
+                    if (currentListenButton) currentListenButton.classList.add('listening');
                  };
                  recognition.onspeechend = () => {
+                     const currentListenStatus = document.getElementById('listen-status');
+                     const currentListenButton = document.getElementById('listen-button');
                     if(recognition) recognition.stop();
-                    if (listenStatus) listenStatus.textContent = "MAIA está pensando...";
-                    if (listenButton) listenButton.classList.remove('listening');
+                    if (currentListenStatus) currentListenStatus.textContent = "MAIA está pensando...";
+                    if (currentListenButton) currentListenButton.classList.remove('listening');
                  };
                  recognition.onend = () => {
-                    if(listenButton && listenButton.disabled && !listenButton.classList.contains('listening')) {
+                     const currentListenStatus = document.getElementById('listen-status');
+                     const currentListenButton = document.getElementById('listen-button');
+                    if(currentListenButton && currentListenButton.disabled && !currentListenButton.classList.contains('listening')) {
                          // Let onresult/onerror handle re-enabling
-                    } else if (listenButton && listenButton.classList.contains('listening')) {
-                        listenButton.classList.remove('listening');
-                        if (listenStatus) listenStatus.textContent = "Se detuvo la escucha. Intenta de nuevo.";
-                        listenButton.disabled = false;
+                    } else if (currentListenButton && currentListenButton.classList.contains('listening')) {
+                        currentListenButton.classList.remove('listening');
+                        if (currentListenStatus) currentListenStatus.textContent = "Se detuvo la escucha. Intenta de nuevo.";
+                        currentListenButton.disabled = false;
                     }
                  };
                  recognition.onresult = async (event) => {
+                     const currentListenStatus = document.getElementById('listen-status'); // Query inside handler
+                     const currentListenButton = document.getElementById('listen-button'); // Query inside handler
                      const pregunta = event.results[0][0].transcript.toLowerCase();
                      // Status already set
                      try {
@@ -348,24 +476,37 @@
                          if (answerText) answerText.textContent = respuesta;
                          if (answerContainer) answerContainer.classList.remove('hidden');
                          await handleReadAloud(respuesta);
-                         if (listenStatus) listenStatus.textContent = "Presiona el micrófono para hablar...";
-                     } catch (error) { /* ... error handling ... */ }
-                     finally { if(listenButton) listenButton.disabled = false; }
+                         if (currentListenStatus) currentListenStatus.textContent = "Presiona el micrófono para hablar...";
+                     } catch (error) {
+                          console.error("Error getting Gemini response:", error);
+                          const errorMsg = "Hubo un problema al obtener la respuesta. Intenta de nuevo.";
+                          if (currentListenStatus) currentListenStatus.textContent = errorMsg;
+                          handleReadAloud("Lo siento, " + errorMsg.toLowerCase());
+                     }
+                     finally { if(currentListenButton) currentListenButton.disabled = false; }
                  };
-                 recognition.onerror = (event) => { /* ... error handling ... */ };
+                 recognition.onerror = (event) => {
+                     const currentListenStatus = document.getElementById('listen-status'); // Query inside handler
+                     const currentListenButton = document.getElementById('listen-button'); // Query inside handler
+                     console.error("Speech recognition error:", event.error);
+                     let errorMsg = "No pude entenderte. Intenta de nuevo.";
+                     if (event.error === 'no-speech') { errorMsg = "No detecté que hablaras..."; }
+                     else if (event.error === 'audio-capture') { errorMsg = "Problema con micrófono..."; }
+                     else if (event.error === 'not-allowed') { errorMsg = "Necesito permiso para micrófono."; }
+                     else if (event.error === 'network') { errorMsg = "Problema de red al escuchar."; }
+                     if (currentListenStatus) currentListenStatus.textContent = errorMsg;
+                    if (currentListenButton) {
+                        currentListenButton.classList.remove('listening');
+                        currentListenButton.disabled = false;
+                    }
+                 };
 
-                // Add listener for the button (still need to query it when modal opens)
-                // We attach it here to the global listenButton var, which gets updated in openHelp
-                // This ensures the listener exists even if openHelp hasn't run yet.
-                 // CORRECTION: Attach listener inside openHelp, as listenButton is null here.
-                 // This part needs to be moved or handled differently.
-                 // Moved query and listener attachment *inside* openHelp
+                 // Note: Event listener for listenButton is now added inside openHelp
 
             } else {
-                // Handle browsers without SpeechRecognition (can run early)
+                // Handle browsers without SpeechRecognition
                 console.warn("Speech Recognition not supported in this browser.");
-                // We can't disable the button here as it might not exist yet
-                // We'll disable it inside openHelp if recognition is not supported
+                // Disable button if modal is opened later
             }
 
              // Navigate to the first screen
